@@ -12,17 +12,20 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@RequiredArgsConstructor // tạo constructor cho tất cả các biến mà define là final
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true) // Những field nào có access modify là default thì sẽ trở thành private, final
+// (không ghi access modify thì là default)
 public class UserService {
 
-    UserRepository userRepository;
-    UserMapper userMapper;
+    UserRepository userRepository; // Access modify là default sẽ chuyển thành private final
+    UserMapper userMapper; // Access modify là default sẽ chuyển thành private final
 
     public User createUser(UserCreationRequest request){
 //    User user = new User();
@@ -39,6 +42,8 @@ public class UserService {
 //                .build();
 
         User user = userMapper.toUser(request);
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
 
 //        user.setUsername(request.getUsername());
 //        user.setPassword(request.getPassword());
