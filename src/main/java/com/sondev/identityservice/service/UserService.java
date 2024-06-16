@@ -4,6 +4,7 @@ import com.sondev.identityservice.dto.request.UserCreationRequest;
 import com.sondev.identityservice.dto.request.UserUpdateRequest;
 import com.sondev.identityservice.dto.response.UserResponse;
 import com.sondev.identityservice.entity.User;
+import com.sondev.identityservice.enums.Role;
 import com.sondev.identityservice.exception.AppException;
 import com.sondev.identityservice.exception.ErrorCode;
 import com.sondev.identityservice.mapper.UserMapper;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -26,7 +28,7 @@ public class UserService {
 
     UserRepository userRepository; // Access modify là default sẽ chuyển thành private final
     UserMapper userMapper; // Access modify là default sẽ chuyển thành private final
-
+    PasswordEncoder passwordEncoder;
     public User createUser(UserCreationRequest request){
 //    User user = new User();
 
@@ -42,8 +44,12 @@ public class UserService {
 //                .build();
 
         User user = userMapper.toUser(request);
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+        //PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        HashSet<String> roles = new HashSet<>();
+        roles.add(Role.USER.name());
+        user.setRoles(roles);
 
 //        user.setUsername(request.getUsername());
 //        user.setPassword(request.getPassword());

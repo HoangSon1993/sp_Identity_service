@@ -6,6 +6,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
@@ -38,6 +40,11 @@ public class SecurityConfig {
                 request
                         // Allow POST requests to public endpoints without authentication
                         .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
+
+                        // Chỉ có Admin mới có thể truy cập được
+                        .requestMatchers(HttpMethod.GET, "/users")
+                                        .hasAuthority("SCOPE_ADMIN")
+
                         // All other requests must be authenticated
                         .anyRequest().authenticated());
 
@@ -62,5 +69,11 @@ public class SecurityConfig {
                 .withSecretKey(secretKeySpec)
                 .macAlgorithm(MacAlgorithm.HS512)
                 .build();
+    }
+
+    // Khai bao và đánh dấu là 1 Bean để có thể sử dụng @Autowired
+    @Bean // Could not autowire. No beans of 'PasswordEncoder' type found.
+    PasswordEncoder passwordEncoder (){
+        return  new BCryptPasswordEncoder(10);
     }
 }
