@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -20,6 +21,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 @Configuration
 @EnableWebSecurity //Optional ==> because Auto Enable
+@EnableMethodSecurity // Enable Phân quyền trên method.   https://docs.spring.io/spring-security/reference/servlet/authorization/method-security.html
 public class SecurityConfig {
 // referent --> https://docs.spring.io/spring-security/reference/servlet/oauth2/index.html
 
@@ -44,9 +46,14 @@ public class SecurityConfig {
                         // Allow POST requests to public endpoints without authentication
                         .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
 
-                        // Chỉ có Admin mới có thể truy cập được
-                        .requestMatchers(HttpMethod.GET, "/users")
-                        .hasRole(Role.ADMIN.name()) //.hasAuthority("ROLE_ADMIN")
+
+//                        // Phân quyền role trên END POINT thay vào đó sử dụng phân quyền trên method
+//                        // Chỉ có Admin mới có thể truy cập được
+//                        .requestMatchers(HttpMethod.GET, "/users")
+//                        .hasRole(Role.ADMIN.name()) //.hasAuthority("ROLE_ADMIN")
+
+                        // @EnableMethodSecurity Sử dụng phân quyền trên method
+                        // referent    https://docs.spring.io/spring-security/reference/servlet/authorization/method-security.html
 
                         // All other requests must be authenticated
                         .anyRequest().authenticated());
