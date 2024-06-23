@@ -65,6 +65,8 @@ public class SecurityConfig {
                         jwtConfigurer.decoder(jwtDecoder())
                                 .jwtAuthenticationConverter(jwtAuthenticationConverter()))
 
+                        //
+                        .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
         );
 
         // Disable CSRF protection
