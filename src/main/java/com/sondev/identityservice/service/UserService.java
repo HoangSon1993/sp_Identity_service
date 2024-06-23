@@ -56,7 +56,7 @@ public class UserService {
 
         HashSet<String> roles = new HashSet<>();
         roles.add(Role.USER.name());
-        user.setRoles(roles);
+       // user.setRoles(roles);
 
 //        user.setUsername(request.getUsername());
 //        user.setPassword(request.getPassword());
@@ -75,30 +75,30 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    @PostAuthorize("returnObject.username == authentication.name")
-    public UserResponse getUser(String userId) {
+//    @PostAuthorize("returnObject.username == authentication.name")
+//    public UserResponse getUser(String userId) {
+//
+//        log.info("In method get my info");
+//
+//        return userMapper.toUserResponse(userRepository.findById(userId)
+//                .orElseThrow(() -> new RuntimeException("User not found")));
+//    }
 
-        log.info("In method get my info");
+//    public UserResponse getMyInfo () {
+//        var context = SecurityContextHolder.getContext();
+//     String name =   context.getAuthentication().getName();
+//
+//        User user = userRepository.findByUsername(name).orElseThrow(
+//                ()-> new AppException(ErrorCode.USER_NOT_EXISTED));
+//        return userMapper.toUserResponse(user);
+//    }
 
-        return userMapper.toUserResponse(userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found")));
-    }
-
-    public UserResponse getMyInfo () {
-        var context = SecurityContextHolder.getContext();
-     String name =   context.getAuthentication().getName();
-
-        User user = userRepository.findByUsername(name).orElseThrow(
-                ()-> new AppException(ErrorCode.USER_NOT_EXISTED));
-        return userMapper.toUserResponse(user);
-    }
-
-    public UserResponse updateUser(String userId, UserUpdateRequest request){
-        User user = userRepository.findById(userId)
-                .orElseThrow(()->new RuntimeException("User not found"));
-
-        userMapper.updateUser(user,request);
-        // Đoạn code trên thay thế tất cả các dòng bên dưới
+//    public UserResponse updateUser(String userId, UserUpdateRequest request) {
+//        User user = userRepository.findById(userId)
+//                .orElseThrow(() -> new RuntimeException("User not found"));
+//
+//        userMapper.updateUser(user, request);
+//        // Đoạn code trên thay thế tất cả các dòng bên dưới
 
 
 //        user.setPassword(request.getPassword());
@@ -106,10 +106,9 @@ public class UserService {
 //        user.setFirstName(request.getFirstName());
 //        user.setDob(request.getDob());
 
-        return userMapper.toUserResponse(userRepository.save(user));
-    }
-
-    public void deleteUser(String userId){
-        userRepository.deleteById(userId);
-    }
+//        return userMapper.toUserResponse(userRepository.save(user));
+    //}
+//    public void deleteUser(String userId){
+//        userRepository.deleteById(userId);
+//    }
 }

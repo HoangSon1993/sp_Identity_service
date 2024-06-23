@@ -14,6 +14,6 @@ public interface UserMapper {
 
     //@Mapping(source = "firstName", target = "lastName") // Chỉ định map firstName cho lastName
     //@Mapping(target = "firstName", ignore = true) // Bỏ qua k mapping Fied firstName
-    UserResponse toUserResponse (User user);
+//    UserResponse toUserResponse (User user);
     void  updateUser(@MappingTarget User user, UserUpdateRequest request);
 }

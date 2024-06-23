@@ -83,7 +83,7 @@ public class AuthenticationService {
                 .issuer("sondev.com")
                 .issueTime(new Date())
                 .expirationTime(new Date(Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()))
-                .claim("scope",buildScope(user))
+               // .claim("scope",buildScope(user))
                 .build();
         Payload payload= new Payload(jwtClaimsSet.toJSONObject());
        JWSObject jwsObject = new JWSObject(header,payload);
@@ -98,11 +98,11 @@ public class AuthenticationService {
         }
     }
 
-    private String buildScope(User user){
-        StringJoiner stringJoiner  = new StringJoiner(" ");
-        if(!CollectionUtils.isEmpty(user.getRoles())){
-            user.getRoles().forEach(stringJoiner::add); // Viết đầy đủ:  user.getRoles().forEach(s->stringJoiner.add(s));
-        }
-        return stringJoiner.toString();
-    }
+//    private String buildScope(User user){
+//        StringJoiner stringJoiner  = new StringJoiner(" ");
+//        if(!CollectionUtils.isEmpty(user.getRoles())){
+//            user.getRoles().forEach(stringJoiner::add); // Viết đầy đủ:  user.getRoles().forEach(s->stringJoiner.add(s));
+//        }
+//        return stringJoiner.toString();
+//    }
 }
